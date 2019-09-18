@@ -58,12 +58,14 @@ def get_num_inputs(train_iter):
     num_inputs = len(X[0].view(-1, 1))
     return num_inputs
 
+# For the reshape of the training data
 class FlattenLayer(nn.Module):
     def __init__(self):
         super(FlattenLayer, self).__init__()
     def forward(self, x):
         return x.view(x.shape[0], -1)
 
+# For evalution of the accuracy in test data
 def evaluate_accuracy(test_iter, net):
     acc_sum, n = 0.0, 0
     for X, y in test_iter:
@@ -71,6 +73,7 @@ def evaluate_accuracy(test_iter, net):
         n += y.shape[0]
     return acc_sum / n
 
+# Define how to train a net
 def train_net(net, train_iter, test_iter, loss, num_epochs, batch_size,
 params = None, lr = None, optimizer = None):
     for epoch in range(1, num_epochs + 1):
