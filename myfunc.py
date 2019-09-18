@@ -21,7 +21,7 @@ from collections import OrderedDict
 # This function is used to download data by using torchvision. If data exists, this function
 # will direct load it. After loading data successfully, small batches will be generated.
 def load_data_fashion_mnist(batch_size):
-    mnist_train = torchvision.datasets.FashionMNIST(root = '~/Datasets/FashionMNIST', train = True, download =
+    mnist_train = torchvision.datasets.FashionMNIST(root = 'Datasets/FashionMNIST', train = True, download =
     True, transform = transforms.ToTensor())
     mnist_test = torchvision.datasets.FashionMNIST(root = 'Datasets/FashionMNIST', train = False, download = True,
     transform = transforms.ToTensor())
@@ -78,6 +78,7 @@ def train_net(net, train_iter, test_iter, loss, num_epochs, batch_size,
 params = None, lr = None, optimizer = None):
     for epoch in range(1, num_epochs + 1):
         train_l_sum, train_acc_sum, n = 0.0, 0.0, 0
+        net.train()
         for X, y in train_iter:
             y_hat = net(X)
             l = loss(y_hat, y).sum()
@@ -93,6 +94,7 @@ params = None, lr = None, optimizer = None):
             train_l_sum += l.item()
             train_acc_sum += (y_hat.argmax(dim = 1) == y).sum().item()
             n += y.shape[0]
+        net.eval()
         test_acc = evaluate_accuracy(test_iter, net)
         print('epoch %d, loss %.4f, train acc %.3f, test acc %.3f' %(epoch,
         train_l_sum / n, train_acc_sum / n, test_acc))
