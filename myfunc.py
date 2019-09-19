@@ -77,7 +77,7 @@ def evaluate_accuracy(test_iter, net):
 def train_net(net, train_iter, test_iter, loss, num_epochs, batch_size,
 params = None, lr = None, optimizer = None):
     for epoch in range(1, num_epochs + 1):
-        train_l_sum, train_acc_sum, n = 0.0, 0.0, 0
+        train_l_sum, train_acc_sum, n, start = 0.0, 0.0, 0, time.time()
         net.train()
         for X, y in train_iter:
             y_hat = net(X)
@@ -96,5 +96,5 @@ params = None, lr = None, optimizer = None):
             n += y.shape[0]
         net.eval()
         test_acc = evaluate_accuracy(test_iter, net)
-        print('epoch %d, loss %.4f, train acc %.3f, test acc %.3f' %(epoch,
-        train_l_sum / n, train_acc_sum / n, test_acc))
+        print('epoch %d, loss %.4f, train acc %.3f, test acc %.3f, time %.1f' %(epoch,
+        train_l_sum / n, train_acc_sum / n, test_acc, time.time() - start))
