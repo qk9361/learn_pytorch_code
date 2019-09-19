@@ -98,3 +98,27 @@ params = None, lr = None, optimizer = None):
         test_acc = evaluate_accuracy(test_iter, net)
         print('epoch %d, loss %.4f, train acc %.3f, test acc %.3f, time %.1f' %(epoch,
         train_l_sum / n, train_acc_sum / n, test_acc, time.time() - start))
+
+class LeNet(nn.Module):
+    def __init__(self):
+        super(LeNet, self).__init__()
+        self.conv = nn.Sequential(
+                                nn.Conv2d(1, 6, 5),
+                                nn.ReLU(),
+                                nn.MaxPool2d(2,2),
+                                nn.Conv2d(6, 16, 5),
+                                nn.ReLU(),
+                                nn.MaxPool2d(2,2),
+                                )
+        self.fc = nn.Sequential(
+                                nn.Linear(16*5*5, 120),
+                                nn.ReLU(),
+                                nn.Linear(120, 84),
+                                nn.ReLU(),
+                                nn.Linear(84, 10)
+                                )
+
+    def forward(self, img):
+        feature = self.conv(img)
+        output = self.fc(feature.view(img.shape[0], -1))
+        return output 
